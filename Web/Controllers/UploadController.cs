@@ -6,6 +6,8 @@ using Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Web.Mapper;
+using Web.ViewModels.Upload;
 
 namespace Web.Controllers
 {
@@ -21,8 +23,8 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<Upload> CreateUpload(
-            [FromBody]
+        public async Task<UploadDto> CreateUpload(
+            [FromForm]
             IFormFile file
         )
         {
@@ -42,15 +44,15 @@ namespace Web.Controllers
             );
 
             // TODO save file, move to service
-            return envelope.Uploads[0];
+            return ObjectMapper.Mapper.Map<UploadDto>(envelope.Uploads[0]);
         }
 
         [HttpGet("{id}")]
-        public async Task<Upload> GetUpload(Guid id)
+        public async Task<UploadDto> GetUpload(Guid id)
         {
-            var envelope = _mediator.Send(new GetUploadQuery(id));
+            var envelope = await _mediator.Send(new GetUploadQuery(id));
             
-            return 
+            return ObjectMapper.Mapper.Map<UploadDto>(envelope.Upload);
         }
     }
 }

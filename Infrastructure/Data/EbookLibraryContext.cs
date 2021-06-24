@@ -1,30 +1,29 @@
-﻿using Core.Entities;
+﻿using System.Reflection;
+using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class EbookLibraryContext : DbContext
+    public class EbookLibraryContext : DbContext, IDbContextSet, IDbContextMigrate
     {
         public EbookLibraryContext(DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<Book> Books { get; set; } = default!;
-
-        public DbSet<Chapter> Chapters { get; set; } = default!;
-
-        public DbSet<Upload> Uploads { get; set; } = default!;
-
+        public DbSet<Book> Books => Set<Book>();
+        public DbSet<Chapter> Chapters => Set<Chapter>();
+        public DbSet<Upload> Uploads => Set<Upload>();
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>(
-                b =>
-                {
-                    b.HasKey(t => t.Id);
-                    b.HasOne(t => t.Upload).WithMany().HasForeignKey(t => t.UploadId);
-                    b.HasMany(t => t.Chapters).WithOne(t => t.Book).HasForeignKey(t => t.BookId);
-                }
-            );
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public Task MigrateAsync()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

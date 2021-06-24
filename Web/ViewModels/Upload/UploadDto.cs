@@ -1,13 +1,12 @@
 ﻿using System;
-using Core.Entities.Base;
+using Web.ViewModels.Shared;
 
-namespace Core.Entities
+namespace Web.ViewModels.Upload
 {
-    public class Upload : Entity
+    public class UploadDto : Dto<Guid>
     {
         public string Name { get; set; } = default!;
         public string ContentType { get; set; } = default!;
         public long Size { get; set; } = default!;
-        public DateTimeOffset CreatedAt { get; set; }
     }
 }

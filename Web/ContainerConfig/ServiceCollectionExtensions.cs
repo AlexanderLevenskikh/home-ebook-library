@@ -1,4 +1,6 @@
-﻿using Infrastructure.Data;
+﻿using Application.Envelopes.Base;
+using Infrastructure.Data;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +10,17 @@ namespace Web.ContainerConfig
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            return services.ConfigureDatabase();
+            services.ConfigureDatabase();
+            
+            services.AddMediatR(typeof(ListEnvelope).Assembly);
+            
+            services.AddAutoMapper(services.GetType().Assembly);
+            
+            services.AddControllersWithViews();
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+
+            return services;
         }
 
         private static IServiceCollection ConfigureDatabase(this IServiceCollection services)

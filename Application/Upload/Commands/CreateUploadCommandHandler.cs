@@ -31,6 +31,7 @@ namespace Application.Upload.Commands
                 .ToList();
 
             await _context.Uploads.AddRangeAsync(uploads, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new UploadsEnvelope
             {
