@@ -1,7 +1,7 @@
-﻿using Application.Envelopes;
+﻿using Application.Upload.Envelopes;
 using MediatR;
 
-namespace Application.Commands.CreateUploadCommand
+namespace Application.Upload.Commands
 {
     public class CreateUploadCommandData
     {

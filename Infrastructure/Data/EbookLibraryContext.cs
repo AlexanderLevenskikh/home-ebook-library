@@ -9,22 +9,22 @@ namespace Infrastructure.Data
         {
         }
 
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Chapter> Chapters { get; set; }
-        public DbSet<Upload> Uploads { get; set; }
+        public DbSet<Book> Books { get; set; } = default!;
+
+        public DbSet<Chapter> Chapters { get; set; } = default!;
+
+        public DbSet<Upload> Uploads { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>(b =>
-            {
-                b.HasKey(t => t.Id);
-                b.HasOne(t => t.Upload)
-                    .WithMany()
-                    .HasForeignKey(t => t.UploadId);
-                b.HasMany(t => t.Chapters)
-                    .WithOne(t => t.Book)
-                    .HasForeignKey(t => t.BookId);
-            });
+            modelBuilder.Entity<Book>(
+                b =>
+                {
+                    b.HasKey(t => t.Id);
+                    b.HasOne(t => t.Upload).WithMany().HasForeignKey(t => t.UploadId);
+                    b.HasMany(t => t.Chapters).WithOne(t => t.Book).HasForeignKey(t => t.BookId);
+                }
+            );
         }
     }
 }

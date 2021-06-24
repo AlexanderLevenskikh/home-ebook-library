@@ -2,12 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Envelopes;
-using Core.Entities;
+using Application.Upload.Envelopes;
 using Infrastructure.Data;
 using MediatR;
 
-namespace Application.Commands.CreateUploadCommand
+namespace Application.Upload.Commands
 {
     public class CreateUploadCommandHandler : IRequestHandler<CreateUploadsCommand, UploadsEnvelope>
     {
@@ -21,7 +20,7 @@ namespace Application.Commands.CreateUploadCommand
         public async Task<UploadsEnvelope> Handle(CreateUploadsCommand request, CancellationToken cancellationToken)
         {
             var uploads = request.Uploads
-                .Select(upload => new Upload
+                .Select(upload => new Core.Entities.Upload
                 {
                     Id = new Guid(),
                     Name = upload.FileName,

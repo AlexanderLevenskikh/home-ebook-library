@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using Application.Envelopes.Base;
-using Core.Entities;
 
-namespace Application.Envelopes
+namespace Application.Upload.Envelopes
 {
     public class UploadsEnvelope : ListEnvelope
     {
-        public List<Upload> Uploads { get; set; }
+        public List<Core.Entities.Upload> Uploads { get; set; }
     }
 }

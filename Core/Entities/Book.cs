@@ -9,10 +9,12 @@ namespace Core.Entities
     {
         [Required]
         public string Caption { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public Guid UploadId { get; set; }
         
         public Upload Upload { get; set; }
         public List<Chapter> Chapters { get; set; }
+        
+        
     }
 }

@@ -23,6 +23,7 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(GetType().Assembly);
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
