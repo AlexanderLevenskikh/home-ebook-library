@@ -5,7 +5,7 @@ namespace Web.ViewModels.Upload
 {
     public class UploadFileRequestDto
     {
-        public IFormFile File { get; set; } = default!;
+        public IFormFile File { get; set; }
         public UploadProvider UploadProvider { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Upload.Envelopes;
+using Core.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Exceptions;
 using MediatR;
@@ -10,18 +11,16 @@ namespace Application.Upload.Queries
 {
     public class GetUploadHandler : IRequestHandler<GetUploadQuery, UploadEnvelope>
     {
-        private readonly EbookLibraryContext _context;
+        private readonly IUploadRepository _uploadRepository;
 
-        public GetUploadHandler(EbookLibraryContext context)
+        public GetUploadHandler(IUploadRepository uploadRepository)
         {
-            _context = context;
+            _uploadRepository = uploadRepository;
         }
 
         public async Task<UploadEnvelope> Handle(GetUploadQuery request, CancellationToken cancellationToken)
         {
-            var upload = await _context.Uploads
-                .AsNoTracking()
-                .FirstOrDefaultAsync(q => q.Id == request.Id, cancellationToken: cancellationToken);
+            var upload = await _uploadRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (upload == null)
             {

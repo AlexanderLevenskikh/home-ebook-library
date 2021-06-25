@@ -21,9 +21,9 @@ namespace Infrastructure.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public Task MigrateAsync()
+        public async Task MigrateAsync()
         {
-            throw new System.NotImplementedException();
+            await Database.MigrateAsync();
         }
     }
 }

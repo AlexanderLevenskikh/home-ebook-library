@@ -9,9 +9,11 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Upload> builder)
         {
             builder.Property(t => t.Name)
-                .HasMaxLength(500);
+                .HasMaxLength(500)
+                .IsRequired();
             builder.Property(t => t.ContentType)
-                .HasMaxLength(255);
+                .HasMaxLength(255)
+                .IsRequired();
         }
     }
 }

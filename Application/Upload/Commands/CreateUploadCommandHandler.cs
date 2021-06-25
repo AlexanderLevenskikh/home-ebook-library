@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Upload.Envelopes;
+using Core.Repositories;
 using Infrastructure.Data;
 using MediatR;
 
@@ -10,11 +11,11 @@ namespace Application.Upload.Commands
 {
     public class CreateUploadCommandHandler : IRequestHandler<CreateUploadsCommand, UploadsEnvelope>
     {
-        private readonly EbookLibraryContext _context;
+        private readonly IUploadRepository _uploadRepository;
 
-        public CreateUploadCommandHandler(EbookLibraryContext context)
+        public CreateUploadCommandHandler(IUploadRepository uploadRepository)
         {
-            _context = context;
+            _uploadRepository = uploadRepository;
         }
 
         public async Task<UploadsEnvelope> Handle(CreateUploadsCommand request, CancellationToken cancellationToken)
@@ -30,8 +31,7 @@ namespace Application.Upload.Commands
                 })
                 .ToList();
 
-            await _context.Uploads.AddRangeAsync(uploads, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _uploadRepository.AddRangeAsync(uploads, cancellationToken);
 
             return new UploadsEnvelope
             {

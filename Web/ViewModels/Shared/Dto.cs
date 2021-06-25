@@ -2,6 +2,6 @@
 {
     public abstract class Dto<T>
     {
-        public T Id { get; set; } = default!;
+        public T Id { get; set; }
     }
 }

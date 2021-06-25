@@ -10,7 +10,8 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Chapter> builder)
         {
             builder.Property(t => t.Description)
-                .HasMaxLength(2000);
+                .HasMaxLength(2000)
+                .IsRequired();
             
             builder.HasOne(t => t.Book)
                 .WithMany()

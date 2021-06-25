@@ -5,9 +5,9 @@ namespace Core.Entities
 {
     public class Chapter : Entity
     {
-        public string Description { get; set; } = default!;
-        public int PageNumber { get; set; } = default!;
-        public Guid BookId { get; set; } = default!;
-        public Book Book { get; set; } = default!;
+        public string Description { get; set; } 
+        public int PageNumber { get; set; }
+        public Guid BookId { get; set; }
+        public Book Book { get; set; }
     }
 }

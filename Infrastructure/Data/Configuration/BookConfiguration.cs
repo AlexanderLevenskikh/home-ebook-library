@@ -9,14 +9,16 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Book> builder)
         {
             builder.Property(t => t.Caption)
-                .HasMaxLength(500);
+                .HasMaxLength(500)
+                .IsRequired();
             builder.Property(t => t.Description)
                 .HasMaxLength(2000);
             
             builder.HasKey(t => t.Id);
             builder.HasOne(t => t.Upload)
                 .WithMany()
-                .HasForeignKey(t => t.UploadId);
+                .HasForeignKey(t => t.UploadId)
+                .IsRequired();
         }
     }
 }
