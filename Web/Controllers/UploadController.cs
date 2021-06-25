@@ -25,7 +25,7 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<UploadDto> CreateUpload(
             [FromForm]
-            IFormFile file
+            UploadFileRequestDto dto
         )
         {
             var envelope = await _mediator.Send(
@@ -35,9 +35,9 @@ namespace Web.Controllers
                     {
                         new CreateUploadCommandData
                         {
-                            FileName = file.Name,
-                            ContentType = file.ContentType,
-                            FileSize = file.Length
+                            FileName = dto.File.Name,
+                            ContentType = dto.File.ContentType,
+                            FileSize = dto.File.Length
                         }
                     }
                 }
