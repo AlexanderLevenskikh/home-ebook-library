@@ -18,7 +18,7 @@ namespace Application.Upload.Commands
 
         public async Task<Unit> Handle(DeleteUploadCommand request, CancellationToken cancellationToken)
         {
-            var upload = await _uploadRepository.GetByIdAsync(request.Id, cancellationToken);
+            var upload = await _uploadRepository.FindByIdAsync(request.Id, cancellationToken);
             await _uploadRepository.RemoveAsync(upload, cancellationToken);
             
             return await Task.FromResult(Unit.Value);

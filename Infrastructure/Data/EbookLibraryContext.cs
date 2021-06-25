@@ -13,6 +13,7 @@ namespace Infrastructure.Data
 
         public DbSet<Book> Books => Set<Book>();
         public DbSet<Chapter> Chapters => Set<Chapter>();
+        public DbSet<Author> Authors => Set<Author>();
         public DbSet<Upload> Uploads => Set<Upload>();
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

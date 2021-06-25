@@ -33,7 +33,7 @@ namespace Core.Repositories.Base
             CancellationToken cancellationToken = default
         );
 
-        public Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        public Task<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
         public Task<T> AddAsync(T entity, CancellationToken cancellationToken = default);
 
         public Task<IEnumerable<T>> AddRangeAsync(

@@ -7,10 +7,12 @@ namespace Core.Entities
 {
     public class Book : Entity
     {
-        public string Caption { get; set; }
-        public string Description { get; set; }
-        public Guid UploadId { get; set; }
-        public Upload Upload { get; set; }
+        public string Title { get; set; }
+        public Guid ContentId { get; set; }
+        public Guid? ImageId { get; set; }
+        public Upload Content { get; set; }
+        public Upload Image { get; set; }
         public List<Chapter> Chapters { get; set; }
+        public List<Author> Authors { get; set; }
     }
 }

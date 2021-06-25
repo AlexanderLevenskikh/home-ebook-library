@@ -5,6 +5,7 @@ using Core.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Infrastructure.Services.Ebook;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,9 +40,11 @@ namespace Web.Configuration
         {
             return services.AddSingleton<IContentService, ContentService>()
                 .AddSingleton<IContentPathProvider, ContentPathProvider>()
+                .AddSingleton<IEBookParser, EbookParser>()
                 .AddScoped<IBookRepository, BookRepository>()
                 .AddScoped<IChapterRepository, ChapterRepository>()
-                .AddScoped<IUploadRepository, UploadRepository>();
+                .AddScoped<IUploadRepository, UploadRepository>()
+                .AddScoped<IAuthorRepository, AuthorRepository>();
         }
 
         private static IServiceCollection ConfigureDatabase(this IServiceCollection services)

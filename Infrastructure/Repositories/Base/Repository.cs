@@ -81,7 +81,7 @@ namespace Infrastructure.Repositories.Base
             return await query.ToListAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Set<T>()
                 .FindAsync(id);

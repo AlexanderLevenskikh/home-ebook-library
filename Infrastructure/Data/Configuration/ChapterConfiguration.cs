@@ -9,7 +9,7 @@ namespace Infrastructure.Data.Configuration
 
         public void Configure(EntityTypeBuilder<Chapter> builder)
         {
-            builder.Property(t => t.Description)
+            builder.Property(t => t.Title)
                 .HasMaxLength(2000)
                 .IsRequired();
             

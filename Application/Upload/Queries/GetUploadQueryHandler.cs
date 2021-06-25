@@ -20,7 +20,7 @@ namespace Application.Upload.Queries
 
         public async Task<UploadEnvelope> Handle(GetUploadQuery request, CancellationToken cancellationToken)
         {
-            var upload = await _uploadRepository.GetByIdAsync(request.Id, cancellationToken);
+            var upload = await _uploadRepository.FindByIdAsync(request.Id, cancellationToken);
 
             if (upload == null)
             {

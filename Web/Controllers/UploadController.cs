@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Content;
 using Application.Upload.Commands;
 using Application.Upload.Queries;
+using Core.Entities;
 using Infrastructure.Exceptions;
 using Infrastructure.Services;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Extensions;
 using Web.Mapper;
@@ -13,6 +16,7 @@ using Web.ViewModels.Upload;
 
 namespace Web.Controllers
 {
+    [ApiController]
     [Route("api/upload")]
     public class UploadController : Controller
     {
@@ -31,43 +35,26 @@ namespace Web.Controllers
             _contentPathProvider = contentPathProvider;
         }
 
-        [HttpPost]
+        [HttpPost("file")]
         public async Task<UploadDto> CreateUpload(
             [FromForm]
             UploadFileRequestDto dto
         )
         {
-            var envelope = await _mediator.Send(
-                new CreateUploadsCommand
-                {
-                    Uploads = new[]
-                    {
-                        new CreateUploadCommandData
-                        {
-                            FileName = dto.File.FileName,
-                            ContentType = dto.File.ContentType,
-                            FileSize = dto.File.Length
-                        }
-                    }
-                }
-            );
+            var uploads = await CreateUpload(new []{ dto.File }, dto.Provider);
 
-            var upload = envelope.Uploads[0];
+            return uploads[0];
+        }
+        
+        [HttpPost("files")]
+        public async Task<UploadDto> CreateUpload(
+            [FromForm]
+            UploadFilesRequestDto dto
+        )
+        {
+            var uploads = await CreateUpload(dto.Files, dto.Provider);
 
-            try
-            {
-                _contentService.Save(
-                    _contentPathProvider.GetFullPath(ContentType.Upload, upload.Id.ToString()),
-                    dto.File.GetBytes()
-                );
-            }
-            catch (Exception e)
-            {
-                await _mediator.Send(new DeleteUploadCommand(upload.Id));
-                throw;
-            }
-
-            return ObjectMapper.Mapper.Map<UploadDto>(envelope.Uploads[0]);
+            return uploads[0];
         }
 
         [HttpGet("{id}")]
@@ -93,6 +80,40 @@ namespace Web.Controllers
             }
 
             return File(content, envelope.Upload.ContentType, envelope.Upload.Name);
+        }
+
+        private async Task<UploadDto[]> CreateUpload(IFormFile[] files, UploadProvider uploadProvider)
+        {
+            var envelope = await _mediator.Send(
+                new CreateUploadsCommand
+                {
+                    Uploads = files.Select(file => new CreateUploadCommandData
+                    {
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                        FileSize = file.Length,
+                        UploadProvider = uploadProvider
+                    }).ToArray()
+                }
+            );
+
+            foreach (var (upload, file) in envelope.Uploads.Zip(files))
+            {
+                try
+                {
+                    _contentService.Save(
+                        _contentPathProvider.GetFullPath(ContentType.Upload, upload.Id.ToString()),
+                        file.GetBytes()
+                    );
+                }
+                catch (Exception e)
+                {
+                    await _mediator.Send(new DeleteUploadCommand(upload.Id));
+                    throw;
+                }
+            }
+
+            return ObjectMapper.Mapper.Map<UploadDto[]>(envelope.Uploads);
         }
     }
 }
