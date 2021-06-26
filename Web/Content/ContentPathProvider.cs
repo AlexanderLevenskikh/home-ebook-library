@@ -1,7 +1,7 @@
 using System;
 using System.IO;
+using Infrastructure.Constants;
 using Microsoft.Extensions.Configuration;
-using Web.Constants;
 
 namespace Application.Content
 {

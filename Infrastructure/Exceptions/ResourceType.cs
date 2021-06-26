@@ -2,7 +2,7 @@ namespace Infrastructure.Exceptions
 {
     public enum ResourceType
     {
-        Upload,
-        UploadFile,
+        Upload = 1,
+        UploadFile = 2,
     }
 }

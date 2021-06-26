@@ -2,7 +2,9 @@
 using Application.Envelopes.Base;
 using Core.Entities;
 using Core.Repositories;
+using Infrastructure.Constants;
 using Infrastructure.Data;
+using Infrastructure.Extensions;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Infrastructure.Services.Ebook;
@@ -20,8 +22,7 @@ namespace Web.Configuration
             IConfiguration configuration
         )
         {
-            services
-                .ConfigureDatabase()
+            services.ConfigureDatabase(configuration)
                 .AddMediatR(typeof(ListEnvelope).Assembly)
                 .AddAutoMapper(
                     services.GetType()
@@ -47,11 +48,14 @@ namespace Web.Configuration
                 .AddScoped<IAuthorRepository, AuthorRepository>();
         }
 
-        private static IServiceCollection ConfigureDatabase(this IServiceCollection services)
+        private static IServiceCollection ConfigureDatabase(
+            this IServiceCollection services,
+            IConfiguration configuration
+        )
         {
-            services.AddDbContext<EbookLibraryContext>(c => c.UseInMemoryDatabase("EbookLibraryConnection"));
-
-            return services;
+            return services.AddDbContext<EbookLibraryContext>(
+                builder => builder.SetFactoringDbContextParameters(configuration)
+            );
         }
     }
 }

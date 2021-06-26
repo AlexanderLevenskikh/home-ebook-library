@@ -9,12 +9,15 @@ namespace Web.Configuration
     {
         public static IApplicationBuilder UseEbookContext(this IApplicationBuilder builder)
         {
-            var db = builder.ApplicationServices.GetRequiredService<EbookLibraryContext>();
-            db.Database.MigrateAsync()
-                .GetAwaiter()
-                .GetResult();
+            using (var serviceScope = builder.ApplicationServices.CreateScope())
+            {
+                var db = serviceScope.ServiceProvider.GetRequiredService<EbookLibraryContext>();
+                db.Database.MigrateAsync()
+                    .GetAwaiter()
+                    .GetResult();
 
-            return builder;
+                return builder;
+            }
         }
     }
 }

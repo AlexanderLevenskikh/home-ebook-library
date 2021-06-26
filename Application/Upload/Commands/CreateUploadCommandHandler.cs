@@ -27,7 +27,8 @@ namespace Application.Upload.Commands
                     Name = upload.FileName,
                     Size = upload.FileSize,
                     ContentType = upload.ContentType,
-                    CreatedAt = DateTimeOffset.Now
+                    CreatedAt = DateTimeOffset.Now,
+                    UploadProvider = upload.UploadProvider
                 })
                 .ToList();
 

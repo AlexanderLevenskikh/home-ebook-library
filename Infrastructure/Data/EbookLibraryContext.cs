@@ -7,7 +7,7 @@ namespace Infrastructure.Data
 {
     public class EbookLibraryContext : DbContext, IDbContextSet, IDbContextMigrate
     {
-        public EbookLibraryContext(DbContextOptions options) : base(options)
+        public EbookLibraryContext(DbContextOptions<EbookLibraryContext> options) : base(options)
         {
         }
 

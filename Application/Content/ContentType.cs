@@ -2,6 +2,6 @@ namespace Application.Content
 {
     public enum ContentType
     {
-        Upload,
+        Upload = 1,
     }
 }

@@ -14,7 +14,7 @@ namespace Core.Entities
 
     public enum UploadProvider
     {
-        Book,
-        Image,
+        Book = 1,
+        Image = 2,
     }
 }

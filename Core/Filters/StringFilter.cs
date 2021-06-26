@@ -8,7 +8,7 @@ namespace Core.Filters
 
     public enum StringMatchingType
     {
-        Substring,
-        Exact
+        Substring = 1,
+        Exact = 2
     }
 }
