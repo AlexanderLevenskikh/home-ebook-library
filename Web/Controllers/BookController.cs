@@ -1,16 +1,22 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Author.Queries;
 using Application.Book.Commands;
+using Application.Book.Queries;
 using Application.Content;
 using Application.Upload.Commands;
 using Core.Entities;
+using Core.Filters;
 using Infrastructure.Exceptions;
 using Infrastructure.Services;
 using Infrastructure.Services.Ebook;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Web.Mapper;
+using Web.ViewModels;
+using Web.ViewModels.Author;
 using Web.ViewModels.Book;
 
 namespace Web.Controllers
@@ -35,6 +41,38 @@ namespace Web.Controllers
             _bookParser = bookParser;
             _contentService = contentService;
             _contentPathProvider = contentPathProvider;
+        }
+        
+        [HttpGet("list")]
+        public async Task<DtoList<BookDto>> GetBooks(
+            [FromQuery]
+            GetBooksRequestDto request
+        )
+        {
+            var authorsEnvelope = await _mediator.Send(
+                new GetBooksQuery
+                {
+                    Filter = new BooksFilter
+                    {
+                        Limit = request.Limit,
+                        Offset = request.Offset,
+                        Title = request.TitleSubstring != null
+                            ? new StringFilter
+                            {
+                                Data = request.TitleSubstring,
+                                MatchingType = StringMatchingType.Substring
+                            }
+                            : null,
+                        AuthorId = request.AuthorId
+                    }
+                }
+            );
+
+            return new DtoList<BookDto>
+            {
+                Items = ObjectMapper.Mapper.Map<List<BookDto>>(authorsEnvelope.Books),
+                Count = authorsEnvelope.TotalCount
+            };
         }
 
         [HttpPost]

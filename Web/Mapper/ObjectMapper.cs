@@ -1,7 +1,9 @@
 ﻿using System;
 using AutoMapper;
 using Core.Entities;
+using Web.ViewModels.Author;
 using Web.ViewModels.Book;
+using Web.ViewModels.Chapter;
 using Web.ViewModels.Upload;
 
 namespace Web.Mapper
@@ -28,6 +30,8 @@ namespace Web.Mapper
             {
                 CreateMap<Upload, UploadDto>().ReverseMap();
                 CreateMap<Book, BookDto>().ReverseMap();
+                CreateMap<Author, AuthorDto>().ReverseMap();
+                CreateMap<Chapter, ChapterDto>().ReverseMap();
             }
         }
     }

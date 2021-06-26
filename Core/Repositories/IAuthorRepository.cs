@@ -9,8 +9,19 @@ namespace Core.Repositories
 {
     public interface IAuthorRepository : IRepository<Author>
     {
-        public Task<long> CountByFilterAsync(AuthorsFilter filter, CancellationToken cancellationToken = default);
-        public Task<List<Author>> FindByFilterAsync(AuthorsFilter filter, CancellationToken cancellationToken = default);
-        public Task<Author> FindFirstOrDefaultByFilterAsync(AuthorsFilter filter, CancellationToken cancellationToken = default);
+        public Task<long> CountByFilterAsync(
+            AuthorsFilter filter,
+            CancellationToken cancellationToken = default
+        );
+
+        public Task<List<Author>> FindByFilterAsync(
+            AuthorsFilter filter,
+            CancellationToken cancellationToken = default
+        );
+
+        public Task<Author> FindFirstOrDefaultByFilterAsync(
+            AuthorsFilter filter,
+            CancellationToken cancellationToken = default
+        );
     }
 }

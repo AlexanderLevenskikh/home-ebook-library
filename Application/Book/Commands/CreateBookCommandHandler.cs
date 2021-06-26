@@ -83,7 +83,7 @@ namespace Application.Book.Commands
                    );
         }
 
-        private async ValueTask<Chapter> CreateChapterAsync(
+        private async ValueTask<Core.Entities.Chapter> CreateChapterAsync(
             Guid bookId,
             string chapterTitle,
             int level,
@@ -91,7 +91,7 @@ namespace Application.Book.Commands
         )
         {
             return await _chapterRepository.AddAsync(
-                new Chapter
+                new Core.Entities.Chapter
                 {
                     Id = new Guid(),
                     Title = chapterTitle,
