@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,9 +11,11 @@ namespace Infrastructure.Data.Configuration
         {
             builder.Property(t => t.Name)
                 .HasMaxLength(500)
+                .TrimmingConversion()
                 .IsRequired();
             builder.Property(t => t.ContentType)
                 .HasMaxLength(255)
+                .TrimmingConversion()
                 .IsRequired();
         }
     }

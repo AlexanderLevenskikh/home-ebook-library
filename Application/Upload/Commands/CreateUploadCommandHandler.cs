@@ -36,7 +36,7 @@ namespace Application.Upload.Commands
             return new UploadsEnvelope
             {
                 Uploads = uploads,
-                Count = uploads.Count
+                TotalCount = uploads.Count
             };
         }
     }

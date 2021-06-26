@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Book.Envelopes;
 using Application.Upload.Commands;
 using Core.Entities;
+using Core.Filters;
 using Core.Repositories;
 using MediatR;
 
@@ -59,14 +60,21 @@ namespace Application.Book.Commands
             return new BookEnvelope(book);
         }
 
-        private async ValueTask<Author> GetOrCreateAuthorAsync(
+        private async ValueTask<Core.Entities.Author> GetOrCreateAuthorAsync(
             string authorTitle,
             CancellationToken cancellationToken
         )
         {
-            return await _authorRepository.FindByTitleAsync(authorTitle, cancellationToken) ??
+            return await _authorRepository.FindFirstOrDefaultByFilterAsync(new AuthorsFilter
+                   {
+                       Title = new StringFilter
+                       {
+                           Data = authorTitle,
+                           MatchingType = StringMatchingType.Exact
+                       }
+                   }, cancellationToken) ??
                    await _authorRepository.AddAsync(
-                       new Author
+                       new Core.Entities.Author
                        {
                            Id = new Guid(),
                            Title = authorTitle

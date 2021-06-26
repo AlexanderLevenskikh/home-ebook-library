@@ -2,6 +2,6 @@
 {
     public abstract class ListEnvelope
     {
-        public long Count { get; set; }
+        public long TotalCount { get; set; }
     }
 }

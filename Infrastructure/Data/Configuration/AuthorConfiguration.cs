@@ -1,4 +1,5 @@
 using Core.Entities;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,6 +11,7 @@ namespace Infrastructure.Data.Configuration
         {
             builder.Property(t => t.Title)
                 .HasMaxLength(500)
+                .TrimmingConversion()
                 .IsRequired();
 
             builder.HasMany(t => t.Books)
