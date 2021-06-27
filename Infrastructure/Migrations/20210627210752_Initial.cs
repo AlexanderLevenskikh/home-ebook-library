@@ -42,7 +42,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     ContentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ImageId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ImageId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,7 +58,7 @@ namespace Infrastructure.Migrations
                         column: x => x.ImageId,
                         principalTable: "Uploads",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

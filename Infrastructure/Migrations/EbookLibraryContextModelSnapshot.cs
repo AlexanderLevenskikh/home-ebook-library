@@ -60,7 +60,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("ImageId")
-                        .IsRequired()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
@@ -161,9 +160,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.Upload", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.Navigation("Content");
 

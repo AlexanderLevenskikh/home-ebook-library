@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EbookLibraryContext))]
-    [Migration("20210626184249_Initial")]
+    [Migration("20210627210752_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("ImageId")
-                        .IsRequired()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
@@ -163,9 +162,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.Upload", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.Navigation("Content");
 
