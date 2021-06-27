@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Content;
 using Application.Upload.Commands;
+using Application.Upload.Envelopes;
 using Application.Upload.Queries;
 using Core.Entities;
 using Infrastructure.Exceptions;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Extensions;
 using Web.Mapper;
+using Web.ViewModels;
 using Web.ViewModels.Upload;
 
 namespace Web.Controllers
@@ -35,7 +38,7 @@ namespace Web.Controllers
             _contentPathProvider = contentPathProvider;
         }
 
-        [HttpPost("file")]
+        [HttpPost]
         public async Task<UploadDto> CreateUpload(
             [FromForm]
             UploadFileRequestDto dto
@@ -43,18 +46,22 @@ namespace Web.Controllers
         {
             var uploads = await CreateUpload(new []{ dto.File }, dto.Provider);
 
-            return uploads[0];
+            return ObjectMapper.Mapper.Map<UploadDto>(uploads.Uploads[0]);
         }
         
-        [HttpPost("files")]
-        public async Task<UploadDto> CreateUpload(
+        [HttpPost("multiple")]
+        public async Task<DtoList<UploadDto>> CreateUploads(
             [FromForm]
             UploadFilesRequestDto dto
         )
         {
             var uploads = await CreateUpload(dto.Files, dto.Provider);
 
-            return uploads[0];
+            return new DtoList<UploadDto>
+            {
+                Items = ObjectMapper.Mapper.Map<List<UploadDto>>(uploads.Uploads),
+                Count = uploads.TotalCount
+            };
         }
 
         [HttpGet("{id}")]
@@ -82,7 +89,7 @@ namespace Web.Controllers
             return File(content, envelope.Upload.ContentType, envelope.Upload.Name);
         }
 
-        private async Task<UploadDto[]> CreateUpload(IFormFile[] files, UploadProvider uploadProvider)
+        private async Task<UploadsEnvelope> CreateUpload(IFormFile[] files, UploadProvider uploadProvider)
         {
             var envelope = await _mediator.Send(
                 new CreateUploadsCommand
@@ -113,7 +120,7 @@ namespace Web.Controllers
                 }
             }
 
-            return ObjectMapper.Mapper.Map<UploadDto[]>(envelope.Uploads);
+            return envelope;
         }
     }
 }

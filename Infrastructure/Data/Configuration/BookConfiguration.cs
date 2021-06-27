@@ -22,7 +22,7 @@ namespace Infrastructure.Data.Configuration
             builder.HasOne(t => t.Image)
                 .WithMany()
                 .HasForeignKey(t => t.ImageId)
-                .IsRequired();
+                .IsRequired(false);
         }
     }
 }
