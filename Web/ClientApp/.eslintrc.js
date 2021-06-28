@@ -18,8 +18,6 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'prettier',
-        'prettier/react',
-        'prettier/@typescript-eslint',
     ],
     globals: {
         Atomics: 'readonly',
@@ -30,7 +28,7 @@ module.exports = {
         ecmaFeatures: {
             jsx: true,
         },
-        project: './tsconfig.eslint.json',
+        project: './tsconfig.json',
         ecmaVersion: 2021,
         sourceType: 'module',
     },

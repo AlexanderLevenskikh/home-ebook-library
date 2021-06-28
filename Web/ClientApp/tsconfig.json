@@ -1,26 +1,30 @@
 {
   "compilerOptions": {
-    "allowJs": false,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
+    "checkJs": false,
     "declaration": false, // don't emit declarations
     "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["dom", "ES2020"],
+    "lib": ["es6", "dom", "es2018"],
     "locale": "ru",
-    "module": "CommonJS",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "strict": true,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strict": true,
     "outDir": "./dist/",
     "pretty": true,
     "sourceMap": true,
     "stripInternal": true,
-    "target": "ES5",
+    "target": "es5",
     "paths": {
       "root/*": ["./*"]
     },
@@ -31,7 +35,7 @@
     "typings/**/*"
   ],
   "exclude": [
-    "**/node_modules",
+    "node_modules",
     "src/**/*.test.*"
   ]
 }
