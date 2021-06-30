@@ -1,7 +1,3 @@
-const tsJestPresets = require('ts-jest/presets');
-
-const preset = tsJestPresets.jsWithBabel;
-
 module.exports = {
     cacheDirectory: '<rootDir>/.jest-cache',
     globals: {

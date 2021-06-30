@@ -2,27 +2,27 @@ import { Configuration } from 'webpack-dev-server';
 
 export const webpackDevServerPart = (): Configuration => {
     return {
-        host: '0.0.0.0',
-        public: 'localhost:8080',
-        publicPath: '/',
+        compress: true,
         headers: {
             'Access-Control-Allow-Origin': '*',
-        },
-        quiet: false,
-        noInfo: false,
-        stats: {
-            assets: false,
-            colors: true,
-            version: false,
-            hash: false,
-            timings: false,
-            children: false,
-            chunks: false,
-            chunkModules: false,
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+            'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+            mode: 'cors',
         },
         historyApiFallback: {
-            rewrites: [{ from: /./, to: '/public/index.html' }],
+            rewrites: [{ from: /./, to: '/index.html' }],
         },
         hot: true,
+        port: 8080,
+        proxy: {
+            '/api': {
+                target: {
+                    host: '127.0.0.1',
+                    protocol: 'https:',
+                    port: 5001,
+                },
+                secure: false,
+            },
+        },
     };
 };

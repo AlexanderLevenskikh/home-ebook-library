@@ -23,6 +23,7 @@ namespace Web.Configuration
         )
         {
             services.ConfigureDatabase(configuration)
+                .AddCors()
                 .AddMediatR(typeof(ListEnvelope).Assembly)
                 .AddAutoMapper(
                     services.GetType()
@@ -37,7 +38,16 @@ namespace Web.Configuration
             return services;
         }
 
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        private static IServiceCollection AddCors(this IServiceCollection services)
+        {
+            return services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:8080"));
+            });
+        }
+
+        private static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services.AddSingleton<IContentService, ContentService>()
                 .AddSingleton<IContentPathProvider, ContentPathProvider>()

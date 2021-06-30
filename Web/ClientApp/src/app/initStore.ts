@@ -1,29 +1,27 @@
-import { Dependencies } from 'root/app/dependencies';
-import { configureStore } from '@reduxjs/toolkit';
+import { applyMiddleware, compose, createStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
-import { createLogger } from 'redux-logger';
 import { rootReducer } from 'root/app/reducer';
+import { createBrowserHistory } from 'history';
+import { middlewareArray, sagaMiddleware } from 'root/app/middleware';
+import { rootSaga } from 'root/app/saga';
 
-const sagaMiddleware = createSagaMiddleware({
-    context: {
-        dependencies: new Dependencies(),
-    },
-});
-const loggerMiddleware = createLogger({
-    collapsed: true,
-    diff: true,
-});
+export const appHistory = createBrowserHistory();
 
-export const store = configureStore({
-    reducer: rootReducer,
-    devTools: IS_WDS,
-    middleware: [sagaMiddleware, ...(IS_WDS ? [] : [loggerMiddleware])],
-});
+const composeEnhancer: typeof compose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export const store = createStore(
+    rootReducer(appHistory),
+    undefined,
+    composeEnhancer(applyMiddleware(...middlewareArray)),
+);
+
+sagaMiddleware.run(rootSaga);
+
+export type AppState = ReturnType<typeof store.getState>;
 
 if (module.hot && !IS_WDS) {
     module.hot.accept('root/app/reducer', () => {
-        store.replaceReducer(rootReducer);
+        store.replaceReducer(rootReducer(appHistory));
     });
 }
 

@@ -1,4 +1,4 @@
-import { notEmpty } from 'root/shared/shared/notEmpty';
+import { notEmpty } from 'root/shared/utils/notEmpty';
 import { objectToFormData } from 'root/api/httpClient/objectToFormData';
 
 export interface IHttpClient {
@@ -41,7 +41,7 @@ export class HttpClient implements IHttpClient {
     public async makeRequest(options: IHttpClientOptions): Promise<any> {
         const { request, responseType, method, route } = options;
 
-        const href = HttpClient.buildHref(this.serverOrigin, 'api/' + route, request.query);
+        const href = HttpClient.buildHref(this.serverOrigin, route, request.query);
 
         let httpClientOptions: RequestInit = {
             method: options.method.toString(),
@@ -112,7 +112,7 @@ export class HttpClient implements IHttpClient {
     }
 
     private static buildHref(baseUrl: string, route: string, searchParams?: Record<string, any>): string {
-        let url = new URL(route, baseUrl);
+        const url = new URL(route, baseUrl);
 
         if (searchParams) {
             Object.keys(searchParams).forEach((key) => {
@@ -129,7 +129,7 @@ export class HttpClient implements IHttpClient {
     private static async parseJSON(response: Response): Promise<any> {
         const text = await response.text();
         let json = text ? JSON.parse(text) : {};
-        let count = response.headers.get('X-Total-Count');
+        const count = response.headers.get('X-Total-Count');
 
         if (count) {
             json = {
@@ -142,6 +142,6 @@ export class HttpClient implements IHttpClient {
     }
 }
 
-const serverOrigin = IS_PROD_MODE || !IS_WDS ? window.location.origin : 'http://localhost:3001';
+const serverOrigin = window.location.origin;
 
 export const httpClient = new HttpClient(serverOrigin);
