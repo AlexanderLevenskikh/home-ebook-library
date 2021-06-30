@@ -24,24 +24,30 @@ const booksSlice = createSlice({
         loadBooksStarted(state, action) {
             state.loadingState = LoadingState.Pending;
         },
-        loadBooksSucceed(state, action: PayloadAction<{ items: IBookDto[]; totalCount: number }>) {
+        loadBooksSucceed(state, action: PayloadAction<{ totalCount: number }>) {
             state.loadingState = LoadingState.Succeed;
             state.totalCount = action.payload.totalCount;
-            booksAdapter.addMany(state, action.payload.items);
         },
         loadBooksFailed(state, action: PayloadAction<IErrorPayload>) {
             state.loadingState = LoadingState.Failed;
+        },
+        setBooks(state, action: PayloadAction<{ items: IBookDto[] }>) {
+            booksAdapter.setAll(state, action.payload.items);
+        },
+        addBooks(state, action: PayloadAction<{ items: IBookDto[] }>) {
+            booksAdapter.setMany(state, action.payload.items);
         },
     },
 });
 
 export const booksSelectors = booksAdapter.getSelectors<AppState>((state) => state.books);
-export const booksLoadingSelector = createLoadingSelector((state) => state.books.loadingState);
+export const booksLoadingStateSelector = (state: AppState) => state.books.loadingState;
+export const booksLoadingSelector = createLoadingSelector(booksLoadingStateSelector);
 export const loadingBookDetailsSelector = createLoadingSelector((state) => state.books.detailsLoadingState);
 export const booksTotalCountSelector = (state: AppState) => state.books.totalCount;
 
 export const {
-    actions: { loadBooksFailed, loadBooksStarted, loadBooksSucceed },
+    actions: { loadBooksFailed, loadBooksStarted, loadBooksSucceed, addBooks, setBooks },
     reducer,
 } = booksSlice;
 export default reducer;

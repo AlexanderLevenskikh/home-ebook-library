@@ -30,7 +30,9 @@ namespace Infrastructure.Repositories
             CancellationToken cancellationToken = default
         )
         {
-            return await _context.Books.FilterBy(filter)
+            return await _context.Books
+                .Include(x => x.Authors)
+                .FilterBy(filter)
                 .ToListAsync(cancellationToken: cancellationToken);
         }
 

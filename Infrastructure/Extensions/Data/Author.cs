@@ -11,6 +11,7 @@ namespace Infrastructure.Extensions.Data
         public static IQueryable<Author> FilterBy(this IQueryable<Author> authors, AuthorsFilter filter)
         {
             return authors.FilterByBookId(filter.BookId)
+                .FilterByBookIds(filter.BookIds)
                 .FilterByTitle(filter.Title)
                 .Skip(filter.Offset ?? 0)
                 .Take(
@@ -18,6 +19,13 @@ namespace Infrastructure.Extensions.Data
                     filter.IgnoreLimit.HasValue && filter.IgnoreLimit.Value
                         ? (int?) null
                         : MaxAuthorsTake);
+        }
+        
+        public static IQueryable<Author> FilterByBookIds(this IQueryable<Author> authors, Guid[] bookIds)
+        {
+            return bookIds == null || bookIds.Length == 0
+                ? authors
+                : authors.Where(a => a.Books.Any(b => bookIds.Contains(b.Id)));
         }
 
         public static IQueryable<Author> FilterByBookId(this IQueryable<Author> authors, Guid? bookId)

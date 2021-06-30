@@ -9,5 +9,6 @@ export interface IAuthorListDto extends IListDto<IAuthorDto> {}
 
 export interface IGetAuthorsRequestDto extends IPagingDto {
     bookId?: string;
+    bookIds?: string[];
     titleSubstring?: string;
 }

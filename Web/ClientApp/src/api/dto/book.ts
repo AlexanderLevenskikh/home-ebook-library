@@ -5,6 +5,7 @@ export interface IBookDto {
     title: string;
     contentId: string;
     imageId?: string;
+    authorIds: string[];
 }
 
 export interface IBookListDto extends IListDto<IBookDto> {}

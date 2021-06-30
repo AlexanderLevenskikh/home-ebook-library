@@ -8,5 +8,6 @@ namespace Web.ViewModels.Book
         public string Title { get; set; }
         public Guid ContentId { get; set; }
         public Guid? ImageId { get; set; }
+        public Guid[] AuthorIds { get; set; }
     }
 }

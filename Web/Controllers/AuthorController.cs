@@ -41,7 +41,8 @@ namespace Web.Controllers
                                 MatchingType = StringMatchingType.Substring
                             }
                             : null,
-                        BookId = request.BookId
+                        BookId = request.BookId,
+                        BookIds = request.BookIds
                     }
                 }
             );
